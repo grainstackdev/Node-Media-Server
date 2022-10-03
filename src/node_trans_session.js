@@ -49,6 +49,13 @@ class NodeTransSession extends EventEmitter {
       mapStr += mapMp4;
       Logger.log('[Transmuxing MP4] ' + this.conf.streamPath + ' to ' + ouPath + '/' + mp4FileName);
     }
+    if (this.conf.mkv) {
+      this.conf.mkvFlags = this.conf.mkvFlags ? this.conf.mkvFlags : '';
+      let mkvFileName = dateFormat('yyyy-mm-dd-HH-MM-ss') + '.mkv';
+      let mapMkv = `${this.conf.mkvFlags}${ouPath}/${mkvFileName}|`;
+      mapStr += mapMkv;
+      Logger.log('[Transmuxing MKV] ' + this.conf.streamPath + ' to ' + ouPath + '/' + mkvFileName);
+    }
     if (this.conf.hls) {
       this.conf.hlsFlags = this.getConfig('hlsFlags') || '';
       let hlsFileName = 'index.m3u8';
@@ -71,7 +78,7 @@ class NodeTransSession extends EventEmitter {
     Array.prototype.push.apply(argv, this.conf.acParam);
     Array.prototype.push.apply(argv, ['-f', 'tee', '-map', '0:a?', '-map', '0:v?', mapStr]);
     argv = argv.filter((n) => { return n; }); //去空
-    
+
     this.ffmpeg_exec = spawn(this.conf.ffmpeg, argv);
     this.ffmpeg_exec.on('error', (e) => {
       Logger.ffdebug(e);
