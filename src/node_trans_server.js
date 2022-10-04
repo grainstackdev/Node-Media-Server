@@ -53,6 +53,7 @@ class NodeTransServer {
   }
 
   onPostPublish(id, streamPath, args) {
+    console.log('args', args)
     let regRes = /\/(.*)\/(.*)/gi.exec(streamPath);
     let [app, name] = _.slice(regRes, 1);
     let i = this.config.trans.tasks.length;
