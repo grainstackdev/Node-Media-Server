@@ -86,7 +86,7 @@ class NodeTransSession extends EventEmitter {
 
     console.log('this.conf', this.conf)
     if (this.conf['onFileNameAssigned']) {
-      this.conf['onFileNameAssigned'](filename)
+      this.conf['onFileNameAssigned'](this.conf)
     }
 
     this.ffmpeg_exec = spawn(this.conf.ffmpeg, argv);
