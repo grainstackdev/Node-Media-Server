@@ -32,6 +32,7 @@ class NodeTransSession extends EventEmitter {
     let inPath = 'rtmp://127.0.0.1:' + this.conf.rtmpPort + this.conf.streamPath;
     let ouPath = `${this.conf.mediaroot}/${this.conf.streamApp}/${this.conf.streamName}`;
     let mapStr = '';
+    let filename
 
     if (this.conf.rtmp && this.conf.rtmpApp) {
       if (this.conf.rtmpApp === this.conf.streamApp) {
@@ -45,6 +46,7 @@ class NodeTransSession extends EventEmitter {
     if (this.conf.mp4) {
       this.conf.mp4Flags = this.conf.mp4Flags ? this.conf.mp4Flags : '';
       let mp4FileName = dateFormat('yyyy-mm-dd-HH-MM-ss') + '.mp4';
+      filename = mp4FileName
       let mapMp4 = `${this.conf.mp4Flags}${ouPath}/${mp4FileName}|`;
       mapStr += mapMp4;
       Logger.log('[Transmuxing MP4] ' + this.conf.streamPath + ' to ' + ouPath + '/' + mp4FileName);
@@ -52,6 +54,7 @@ class NodeTransSession extends EventEmitter {
     if (this.conf.mkv) {
       this.conf.mkvFlags = this.conf.mkvFlags ? this.conf.mkvFlags : '';
       let mkvFileName = dateFormat('yyyy-mm-dd-HH-MM-ss') + '.mkv';
+      filename = mkvFileName
       let mapMkv = `${this.conf.mkvFlags}${ouPath}/${mkvFileName}|`;
       mapStr += mapMkv;
       Logger.log('[Transmuxing MKV] ' + this.conf.streamPath + ' to ' + ouPath + '/' + mkvFileName);
@@ -59,6 +62,7 @@ class NodeTransSession extends EventEmitter {
     if (this.conf.hls) {
       this.conf.hlsFlags = this.getConfig('hlsFlags') || '';
       let hlsFileName = 'index.m3u8';
+      filename = hlsFileName
       let mapHls = `${this.conf.hlsFlags}${ouPath}/${hlsFileName}|`;
       mapStr += mapHls;
       Logger.log('[Transmuxing HLS] ' + this.conf.streamPath + ' to ' + ouPath + '/' + hlsFileName);
@@ -66,6 +70,7 @@ class NodeTransSession extends EventEmitter {
     if (this.conf.dash) {
       this.conf.dashFlags = this.conf.dashFlags ? this.conf.dashFlags : '';
       let dashFileName = 'index.mpd';
+      filename = dashFileName
       let mapDash = `${this.conf.dashFlags}${ouPath}/${dashFileName}`;
       mapStr += mapDash;
       Logger.log('[Transmuxing DASH] ' + this.conf.streamPath + ' to ' + ouPath + '/' + dashFileName);
@@ -78,6 +83,10 @@ class NodeTransSession extends EventEmitter {
     Array.prototype.push.apply(argv, this.conf.acParam);
     Array.prototype.push.apply(argv, ['-f', 'tee', '-map', '0:a?', '-map', '0:v?', mapStr]);
     argv = argv.filter((n) => { return n; }); //去空
+
+    if (this.conf.args[onFileNameAssigned]) {
+      this.conf.args[onFileNameAssigned](filename)
+    }
 
     this.ffmpeg_exec = spawn(this.conf.ffmpeg, argv);
     this.ffmpeg_exec.on('error', (e) => {
