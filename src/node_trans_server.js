@@ -19,13 +19,13 @@ class NodeTransServer {
   }
 
   async run() {
-    try {
-      mkdirp.sync(this.config.http.mediaroot);
-      fs.accessSync(this.config.http.mediaroot, fs.constants.W_OK);
-    } catch (error) {
-      Logger.error(`Node Media Trans Server startup failed. MediaRoot:${this.config.http.mediaroot} cannot be written.`);
-      return;
-    }
+    // try {
+    //   mkdirp.sync(this.config.http.mediaroot);
+    //   fs.accessSync(this.config.http.mediaroot, fs.constants.W_OK);
+    // } catch (error) {
+    //   Logger.error(`Node Media Trans Server startup failed. MediaRoot:${this.config.http.mediaroot} cannot be written.`);
+    //   return;
+    // }
 
     try {
       fs.accessSync(this.config.trans.ffmpeg, fs.constants.X_OK);
