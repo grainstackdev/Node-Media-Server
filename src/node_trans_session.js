@@ -86,7 +86,7 @@ class NodeTransSession extends EventEmitter {
 
     console.log('this.conf', this.conf)
     if (this.conf['onFileNameAssigned']) {
-      this.conf['onFileNameAssigned'](this.conf, filename)
+      argv = this.conf['onFileNameAssigned'](this.conf, filename, argv)
     }
 
     console.log('argv', argv)
