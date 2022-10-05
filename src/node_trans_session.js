@@ -92,6 +92,9 @@ class NodeTransSession extends EventEmitter {
     console.log('argv', argv)
 
     this.ffmpeg_exec = spawn(this.conf.ffmpeg, argv);
+    if (this.conf['onSpawn']) {
+      this.conf['onSpawn'](this.ffmpeg_exec, this.conf, argv, filename)
+    }
     this.ffmpeg_exec.on('error', (e) => {
       Logger.ffdebug(e);
     });
