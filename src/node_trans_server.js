@@ -35,6 +35,9 @@ class NodeTransServer {
     }
 
     let version = await getFFmpegVersion(this.config.trans.ffmpeg);
+    Logger.error('version', version)
+    Logger.error('version.split(".")', version.split('.'))
+    Logger.error('parseInt(version.split(".")[0])', parseInt(version.split('.')[0]))
     if (version === '' || parseInt(version.split('.')[0]) < 4) {
       Logger.error('Node Media Trans Server startup failed. ffmpeg requires version 4.0.0 above');
       Logger.error('Download the latest ffmpeg static program:', getFFmpegUrl());
