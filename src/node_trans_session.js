@@ -100,7 +100,7 @@ class NodeTransSession extends EventEmitter {
     });
 
     this.ffmpeg_exec.stdout.on('data', (data) => {
-      // Logger.log(`FF输出：${data.toString()}`);
+      Logger.log(`FF输出：${data.toString()}`);
     });
 
     this.ffmpeg_exec.stderr.on('data', (data) => {
