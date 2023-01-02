@@ -6,6 +6,7 @@
 const Crypto = require('crypto');
 const { spawn } = require('child_process');
 const context = require('./node_core_ctx');
+const Logger = require('./node_core_logger');
 
 function generateNewSessionID() {
   let sessionID = '';
@@ -48,6 +49,7 @@ function verifyAuth(signStr, streamId, secretKey) {
 
 function getFFmpegVersion(ffpath) {
   return new Promise((resolve, reject) => {
+    Logger.error(`ffpath: ${ffpath}`)
     let ffmpeg_exec = spawn(ffpath, ['-version']);
     let version = '';
     ffmpeg_exec.on('error', (e) => {
