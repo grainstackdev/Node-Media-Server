@@ -53,9 +53,11 @@ function getFFmpegVersion(ffpath) {
     let ffmpeg_exec = spawn(ffpath, ['-version']);
     let version = '';
     ffmpeg_exec.on('error', (e) => {
+      Logger.error(e)
       reject(e);
     });
     ffmpeg_exec.stdout.on('data', (data) => {
+      Logger.error(data.toString())
       try {
         version = data.toString().split(/(?:\r\n|\r|\n)/g)[0].split('\ ')[2];
       } catch (e) {
