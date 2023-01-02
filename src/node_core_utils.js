@@ -49,17 +49,16 @@ function verifyAuth(signStr, streamId, secretKey) {
 
 function getFFmpegVersion(ffpath) {
   return new Promise((resolve, reject) => {
-    Logger.error(`ffpath: ${ffpath}`)
     let ffmpeg_exec = spawn(ffpath, ['-version']);
     let version = '';
     ffmpeg_exec.on('error', (e) => {
-      Logger.error(e)
       reject(e);
     });
     ffmpeg_exec.stdout.on('data', (data) => {
-      Logger.error(data.toString())
       try {
-        version = data.toString().split(/(?:\r\n|\r|\n)/g)[0].split('\ ')[2];
+        if (!version) {
+          version = data.toString().match(/ffmpeg version (\d+\.\d+\.\d+)/)?.[1]
+        }
       } catch (e) {
       }
     });
