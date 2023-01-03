@@ -100,9 +100,9 @@ class NodeTransSession extends EventEmitter {
     });
 
     this.ffmpeg_exec.stdout.on('data', (data) => {
-      if (this.conf.debug) {
-        Logger.log(`ffmpeg stdout：${data.toString()}`);
-      }
+      // if (this.conf.debug) {
+      //   Logger.log(`ffmpeg stdout：${data.toString()}`);
+      // }
     });
 
     this.ffmpeg_exec.stderr.on('data', (data) => {
